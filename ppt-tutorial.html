@@ -75,8 +75,22 @@
             <p class="mt-2 text-lg text-gray-600">Unduh materi presentasi untuk mempelajari layanan FoodMedia lebih dalam.</p>
         </div>
 
+        <!-- Search Bar -->
+        <div class="mb-8">
+            <input type="text" id="search-input" placeholder="Cari tutorial PPT..." class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-food-primary focus:border-transparent mx-auto block">
+            <div id="recommendations" class="mt-4 text-center">
+                <p class="text-sm text-gray-600 mb-2">Rekomendasi pencarian:</p>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <button class="px-3 py-1 bg-red-100 text-food-primary rounded-full text-sm hover:bg-red-200 transition" onclick="setSearch('Pesan Antar')">Pesan Antar</button>
+                    <button class="px-3 py-1 bg-red-100 text-food-primary rounded-full text-sm hover:bg-red-200 transition" onclick="setSearch('Pick Up')">Pick Up</button>
+                    <button class="px-3 py-1 bg-red-100 text-food-primary rounded-full text-sm hover:bg-red-200 transition" onclick="setSearch('Tutorial')">Tutorial</button>
+                    <button class="px-3 py-1 bg-red-100 text-food-primary rounded-full text-sm hover:bg-red-200 transition" onclick="setSearch('Layanan')">Layanan</button>
+                </div>
+            </div>
+        </div>
+
         <!-- PPT List -->
-        <div class="space-y-4">
+        <div class="space-y-4" id="ppt-list">
             
             <!-- Contoh Item 1 -->
             <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -190,6 +204,87 @@
                     mobileMenuButton.click();
                 }
             });
+
+            // Search functionality
+            const searchInput = document.getElementById('search-input');
+            const pptList = document.getElementById('ppt-list');
+            const pptItems = Array.from(pptList.children);
+
+            function levenshteinDistance(a, b) {
+                const matrix = [];
+                for (let i = 0; i <= b.length; i++) {
+                    matrix[i] = [i];
+                }
+                for (let j = 0; j <= a.length; j++) {
+                    matrix[0][j] = j;
+                }
+                for (let i = 1; i <= b.length; i++) {
+                    for (let j = 1; j <= a.length; j++) {
+                        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                            matrix[i][j] = matrix[i - 1][j - 1];
+                        } else {
+                            matrix[i][j] = Math.min(
+                                matrix[i - 1][j - 1] + 1,
+                                matrix[i][j - 1] + 1,
+                                matrix[i - 1][j] + 1
+                            );
+                        }
+                    }
+                }
+                return matrix[b.length][a.length];
+            }
+
+            function searchPPTs(query) {
+                if (!query.trim()) {
+                    pptItems.forEach(item => item.style.display = 'block');
+                    return;
+                }
+
+                const queryWords = query.toLowerCase().split(' ');
+                const scoredItems = pptItems.map(item => {
+                    const title = item.querySelector('h3').textContent.toLowerCase();
+                    let score = 0;
+                    let closestDistance = Infinity;
+
+                    queryWords.forEach(word => {
+                        if (title.includes(word)) {
+                            score += 10; // Exact match bonus
+                        }
+                        // Calculate closest word distance
+                        const titleWords = title.split(' ');
+                        titleWords.forEach(titleWord => {
+                            const distance = levenshteinDistance(word, titleWord);
+                            closestDistance = Math.min(closestDistance, distance);
+                        });
+                    });
+
+                    // Adjust score based on closest distance
+                    if (closestDistance <= 2) {
+                        score += (3 - closestDistance) * 5;
+                    }
+
+                    return { item, score };
+                });
+
+                scoredItems.sort((a, b) => b.score - a.score);
+
+                pptItems.forEach(item => item.style.display = 'none');
+                scoredItems.forEach(({ item, score }) => {
+                    if (score > 0) {
+                        item.style.display = 'block';
+                    }
+                });
+            }
+
+            searchInput.addEventListener('input', (e) => {
+                searchPPTs(e.target.value);
+            });
+
+            // Set search from recommendations
+            window.setSearch = function(term) {
+                searchInput.value = term;
+                searchPPTs(term);
+            };
         });
     </script>
 </body>
