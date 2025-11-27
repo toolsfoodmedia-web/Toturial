@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pusat Bantuan Video FoodMedia</title>
+    <title>FoodMedia - Pesan Antar, Reservasi & Komunitas Kuliner</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for Icons -->
@@ -69,28 +69,112 @@
                     <div class="w-8 h-8 bg-food-primary rounded-lg flex items-center justify-center text-white font-bold text-xl">F</div>
                     <span class="font-bold text-xl tracking-tight text-gray-900">Food<span class="text-food-primary">Media</span> Help</span>
                 </div>
-                <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-500">
-                    <a href="#" class="hover:text-food-primary transition">Beranda</a>
-                    <a href="#" class="text-food-primary">Tutorial Video</a>
-                    <a href="#" class="hover:text-food-primary transition">FAQ</a>
-                    <a href="#" class="hover:text-food-primary transition">Kontak</a>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-500 items-center">
+                    <a href="index.html" class="text-food-primary font-semibold">Beranda</a>
+                    <a href="#tutorials" class="hover:text-food-primary transition">Tutorial Video</a>
+                    <a href="faq.html" class="hover:text-food-primary transition">FAQ</a>
+                    <a href="ppt-tutorial.html" class="hover:text-food-primary transition">PPT Tutorial</a>
                 </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-food-primary" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Buka menu utama</span>
+                        <i id="menu-open-icon" class="fas fa-bars text-xl"></i>
+                        <i id="menu-close-icon" class="fas fa-times text-xl hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu, show/hide based on menu state. -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="bg-food-primary text-white block px-3 py-2 rounded-md text-base font-medium">Beranda</a>
+                <a href="#tutorials" class="text-gray-500 hover:bg-gray-100 hover:text-food-primary block px-3 py-2 rounded-md text-base font-medium">Tutorial Video</a>
+                <a href="faq.html" class="text-gray-500 hover:bg-gray-100 hover:text-food-primary block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
+                <a href="ppt-tutorial.html" class="text-gray-500 hover:bg-gray-100 hover:text-food-primary block px-3 py-2 rounded-md text-base font-medium">PPT Tutorial</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <div class="bg-food-primary text-white py-12 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/food.png')]"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-4">Panduan Video Tutorial</h1>
-            <p class="text-red-100 text-lg max-w-2xl mx-auto">Temukan panduan lengkap untuk Driver, Merchant, dan Pengguna aplikasi FoodMedia dalam format video yang mudah dipahami.</p>
+    <header class="bg-food-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                        Jelajahi Dunia Kuliner, <span class="text-food-primary">Semudah Sentuhan Jari.</span>
+                    </h1>
+                    <p class="mt-4 text-lg text-gray-600">
+                        Pesan antar, reservasi tempat, atau ambil sendiri. FoodMedia adalah solusi lengkap untuk semua kebutuhan kuliner Anda, menghubungkan Anda dengan ribuan resto terbaik.
+                    </p>
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a href="#" class="inline-block bg-food-primary text-white font-bold py-3 px-8 rounded-full hover:bg-food-dark transition duration-300 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-mobile-alt mr-2"></i> Download Aplikasi
+                        </a>
+                        <a href="#" class="inline-block bg-white text-food-primary font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition duration-300 border-2 border-food-primary">
+                            Jadi Mitra Merchant
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <!-- Placeholder for an engaging image, e.g., a phone with the app -->
+                    <img src="https://foodmedia.co.id/wp-content/uploads/2025/09/header-foto-home-2.png" alt="Aplikasi FoodMedia" class="rounded-xl shadow-2xl">
+                </div>
+            </div>
         </div>
-    </div>
+    </header>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900">Layanan Andalan Kami</h2>
+                <p class="mt-2 text-gray-500 max-w-2xl mx-auto">Semua yang Anda butuhkan untuk menikmati hidangan favorit, ada di sini.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <!-- Feature 1: Pesan Antar -->
+                <div class="p-8 bg-gray-50 rounded-xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+                    <div class="inline-block bg-red-100 text-food-primary p-4 rounded-full mb-4">
+                        <i class="fas fa-motorcycle text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Pesan Antar</h3>
+                    <p class="text-gray-600">Makanan favorit diantar cepat ke depan pintu Anda. Lacak pesanan secara real-time.</p>
+                </div>
+                <!-- Feature 2: Reservasi -->
+                <div class="p-8 bg-gray-50 rounded-xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+                    <div class="inline-block bg-blue-100 text-blue-600 p-4 rounded-full mb-4">
+                        <i class="fas fa-calendar-check text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Reservasi Tempat</h3>
+                    <p class="text-gray-600">Booking meja di restoran pilihan Anda. Datang tanpa perlu antre dan khawatir kehabisan tempat.</p>
+                </div>
+                <!-- Feature 3: Ambil Sendiri -->
+                <div class="p-8 bg-gray-50 rounded-xl border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+                    <div class="inline-block bg-green-100 text-green-600 p-4 rounded-full mb-4">
+                        <i class="fas fa-shopping-bag text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Ambil Sendiri</h3>
+                    <p class="text-gray-600">Pesan online, ambil sendiri di resto. Solusi praktis dan hemat ongkos kirim.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content (Video Tutorials) -->
+    <main id="tutorials" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-20">
         
+        <div class="text-center mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold">Panduan Video Tutorial</h2>
+            <p class="text-gray-500 text-lg max-w-2xl mx-auto mt-2">Temukan panduan lengkap untuk Driver, Merchant, dan Pengguna aplikasi FoodMedia dalam format video yang mudah dipahami.</p>
+             <!-- Search Bar -->
+             <div class="mt-8 max-w-xl mx-auto">
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Cari video (cth: lupa sandi, tambah menu)" class="w-full py-3 px-5 pr-12 rounded-full bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-food-primary/30 transition duration-300 border-2 border-transparent focus:border-food-primary/50">
+                    <i class="fas fa-search absolute right-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+
         <!-- Filters -->
         <div class="flex flex-wrap gap-3 justify-center mb-10" id="filterContainer">
             <button onclick="filterVideos('all')" class="filter-btn active px-6 py-2 rounded-full text-sm font-semibold transition bg-food-primary text-white shadow-md ring-2 ring-offset-2 ring-food-primary">
@@ -112,10 +196,15 @@
             <!-- Content injected by JS -->
         </div>
 
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-10">
+            <p class="text-gray-500 text-lg">Video tidak ditemukan.</p>
+        </div>
+
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8 mt-12">
+    <footer class="bg-gray-900 text-white py-10 mt-12">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-gray-400 text-sm">&copy; 2025 FoodMedia Indonesia. All rights reserved.</p>
         </div>
@@ -252,21 +341,33 @@
         }
 
         // Render Function
-        function renderVideos(filter = 'all') {
+        function renderVideos(categoryFilter = 'all', searchQuery = '') {
             const grid = document.getElementById('videoGrid');
+            const noResults = document.getElementById('noResults');
             grid.innerHTML = '';
+            searchQuery = searchQuery.toLowerCase();
 
-            const filteredVideos = filter === 'all' 
-                ? videos 
-                : videos.filter(v => v.category === filter);
+            const filteredVideos = videos.filter(video => {
+                const matchesCategory = categoryFilter === 'all' || video.category === categoryFilter;
+                const matchesSearch = video.title.toLowerCase().includes(searchQuery) || video.desc.toLowerCase().includes(searchQuery);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filteredVideos.length === 0) {
+                grid.classList.add('hidden');
+                noResults.classList.remove('hidden');
+            } else {
+                grid.classList.remove('hidden');
+                noResults.classList.add('hidden');
+            }
 
             filteredVideos.forEach(video => {
                 const badgeClass = getBadgeColor(video.category);
                 
                 const card = `
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition duration-300 group flex flex-col h-full">
-                        <div class="relative aspect-video bg-gray-200 cursor-pointer overflow-hidden play-overlay" onclick="openModal('${video.id}', '${video.title}', '${video.desc}')">
-                            <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" alt="${video.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="relative aspect-video bg-gray-200 cursor-pointer overflow-hidden play-overlay" onclick="openModal('${video.id}', '${video.title.replace(/'/g, "\\'")}', '${video.desc.replace(/'/g, "\\'")}')">
+                            <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" alt="${video.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
                             <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition flex items-center justify-center">
                                 <div class="play-icon w-14 h-14 bg-food-primary/90 text-white rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm transition duration-300">
                                     <i class="fas fa-play ml-1 text-xl"></i>
@@ -279,7 +380,7 @@
                         <div class="p-5 flex flex-col flex-grow">
                             <h3 class="font-bold text-gray-900 text-lg mb-2 leading-snug group-hover:text-food-primary transition line-clamp-2">${video.title}</h3>
                             <p class="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-2 flex-grow">${video.desc}</p>
-                            <button onclick="openModal('${video.id}', '${video.title}', '${video.desc}')" class="w-full mt-auto py-2.5 px-4 rounded-lg bg-red-50 text-food-primary font-semibold text-sm hover:bg-food-primary hover:text-white transition flex items-center justify-center gap-2 group-btn">
+                            <button onclick="openModal('${video.id}', '${video.title.replace(/'/g, "\\'")}', '${video.desc.replace(/'/g, "\\'")}')" class="w-full mt-auto py-2.5 px-4 rounded-lg bg-red-50 text-food-primary font-semibold text-sm hover:bg-food-primary hover:text-white transition flex items-center justify-center gap-2 group-btn">
                                 <span>Tonton Video</span>
                                 <i class="fas fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
                             </button>
@@ -290,22 +391,36 @@
             });
         }
 
+        let currentCategory = 'all';
+        const searchInput = document.getElementById('searchInput');
+
         // Filter Logic
         function filterVideos(category) {
+            currentCategory = category;
+
             // Update buttons styling
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('bg-food-primary', 'text-white', 'shadow-md', 'ring-2', 'ring-offset-2', 'ring-food-primary');
                 btn.classList.add('bg-white', 'text-gray-600');
             });
 
-            // Highlight clicked button (find by text roughly or context) - simplified for demo:
-            const clickedBtn = Array.from(document.querySelectorAll('.filter-btn')).find(b => b.getAttribute('onclick').includes(category));
+            const clickedBtn = Array.from(document.querySelectorAll('.filter-btn')).find(b => b.getAttribute('onclick').includes(`'${category}'`));
             if(clickedBtn) {
                 clickedBtn.classList.remove('bg-white', 'text-gray-600');
                 clickedBtn.classList.add('bg-food-primary', 'text-white', 'shadow-md', 'ring-2', 'ring-offset-2', 'ring-food-primary');
             }
 
-            renderVideos(category);
+            renderVideos(currentCategory, searchInput.value);
+        }
+
+        // Search Logic
+        searchInput.addEventListener('input', () => {
+            renderVideos(currentCategory, searchInput.value);
+        });
+
+        // Fix for single quotes in modal data
+        function escapeString(str) {
+            return str.replace(/'/g, "\\'");
         }
 
         // Modal Logic
@@ -341,8 +456,28 @@
         });
 
         // Initial Render
-        renderVideos();
+        renderVideos('all', '');
 
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const openIcon = document.getElementById('menu-open-icon');
+        const closeIcon = document.getElementById('menu-close-icon');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('hidden');
+            openIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                mobileMenuButton.click();
+            }
+        });
     </script>
 </body>
 </html>
