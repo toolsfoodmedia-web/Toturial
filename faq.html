@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pusat Bantuan - Foodmedia</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        food: {
+                            primary: '#EF0000', // Red Food (Updated)
+                            secondary: '#FF3333',
+                            dark: '#990000',
+                            bg: '#FEF2F2', // Very light red bg
+                            merchant: '#10B981', // Green for Merchant
+                            driver: '#3B82F6', // Blue for Driver
+                            user: '#F43F5E', // Rose for User
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+.helpcenter {
+  --brand: #ef0000;
+  --text: #111;
+  --text-muted: #666;
+  --bg: #f7f7f7; /* Slightly off-white background */
+  --border: rgba(0,0,0,0.06);
+  --shadow: 0 4px 16px rgba(0,0,0,0.08);
+  --radius: 12px;
+  --font: Inter, system-ui, sans-serif;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+.helpcenter * {box-sizing: border-box; margin: 0; padding: 0;}
+.helpcenter .container {max-width: 1100px; margin: 0 auto; padding: 24px;}
+.helpcenter header {display: flex; align-items: center; gap: 16px; flex-wrap: wrap;}
+.helpcenter .logo-mark {width: 44px; height: 44px; border-radius: 10px; background: var(--brand); display: grid; place-items: center; color: #fff; font-weight: 700;}
+.helpcenter .site-title {font-size: 18px; font-weight: 700;}
+.helpcenter .site-sub {font-size: 13px; color: var(--text-muted);}
+
+.helpcenter .search-wrap {margin-top: 20px; display: flex; flex-wrap: wrap; gap: 12px; position: relative;}
+.helpcenter .search {flex: 1; display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); background: #fff; position: relative; min-width: 250px;}
+.helpcenter .search input {flex: 1; border: none; outline: none; font-size: 16px; background: transparent;}
+.helpcenter .search button {background: var(--brand); border: none; color: #fff; padding: 10px 14px; border-radius: 8px; font-weight: 600; cursor: pointer;}
+.helpcenter .suggestions {list-style: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; border: 1px solid #ddd; border-radius: 6px; box-shadow: var(--shadow); max-height: 150px; overflow-y: auto; display: none; z-index: 10;}
+.helpcenter .suggestions.show {display: block;}
+.helpcenter .suggestions li {padding: 8px 10px; font-size: 13px; cursor: pointer;}
+.helpcenter .suggestions li:hover {background: rgba(239,0,0,0.1);}
+
+.helpcenter .grid {display: grid; grid-template-columns: 300px 1fr; gap: 24px; margin-top: 28px;}
+@media(max-width: 880px){
+  .helpcenter .grid {grid-template-columns: 1fr;}
+  .helpcenter .search-wrap {flex-direction: column;}
+  .helpcenter .search, .helpcenter .card {width: 100%;}
+}
+.helpcenter .sidebar {background: #fff; border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 14px; align-self: start;}
+.helpcenter .cat a {display: block; padding: 10px; border-radius: 8px; text-decoration: none; color: var(--text); font-weight: 600; word-break: break-word;}
+.helpcenter .cat a.active {background: rgba(239,0,0,0.06); color: var(--brand);}
+.helpcenter .card {background: #fff; padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border);}
+.helpcenter .hero {display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 22px; border-radius: var(--radius); background: linear-gradient(90deg, rgba(239,0,0,0.06), rgba(255,255,255,0)); border: 1px solid rgba(239,0,0,0.08);}
+.helpcenter .hero h1 {font-size: 22px;}
+.helpcenter .hero p {color: var(--text-muted); font-size: 14px;}
+.helpcenter .faq-list {margin-top: 18px; display: grid; gap: 12px;}
+.helpcenter .faq-question {display: flex; justify-content: space-between; align-items: center; cursor: pointer;}
+.helpcenter .faq-question h3 {font-size: 15px;}
+.helpcenter .faq-answer {display: none; margin-top: 12px; color: var(--text-muted); font-size: 14px;}
+.helpcenter .open .faq-answer {display: block;}
+.helpcenter footer {margin-top: 28px; text-align: center; color: var(--text-muted); font-size: 13px;}
+
+.sidebar-issue-block {
+  background: #f9f9f9;
+  border: 1px solid var(--border);
+  padding: 14px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-size: 14px;
+}
+.sidebar-issue-block h3 {
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sidebar-issue-block p {
+  margin-bottom: 10px;
+  color: var(--text-muted);
+}
+.sidebar-issue-block .contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sidebar-issue-block .contact-list li {
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sidebar-issue-block .contact-list a {
+  color: var(--text);
+  text-decoration: none;
+}
+.sidebar-issue-block .contact-list i {
+  color: #ef0000; /* merah WA */
+}
+
+  .btn-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--brand); /* merah Foodmedia */
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: all 0.25s ease;
+  }
+  .btn-contact:hover {
+    background-color: #c40000; /* merah lebih gelap saat hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  }
+  .btn-contact i {
+    font-size: 18px;
+  }
+  
+</style>
+</head>
+<body class="helpcenter antialiased">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-40 border-b border-red-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2">
+                    <div class="w-8 h-8 bg-food-primary rounded-lg flex items-center justify-center text-white font-bold text-xl">F</div>
+                    <span class="font-bold text-xl tracking-tight text-gray-900">Food<span class="text-food-primary">Media</span> Help</span>
+                </a>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-500">
+                    <a href="index.html" class="hover:text-food-primary transition">Beranda</a>
+                    <a href="index.html#tutorials" class="hover:text-food-primary transition">Tutorial Video</a>
+                    <a href="faq.html" class="text-food-primary font-semibold">FAQ</a>
+                    <a href="ppt-tutorial.html" class="hover:text-food-primary transition">PPT Tutorial</a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-food-primary" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Buka menu utama</span>
+                        <i id="menu-open-icon" class="fas fa-bars text-xl"></i>
+                        <i id="menu-close-icon" class="fas fa-times text-xl hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu, show/hide based on menu state. -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="text-gray-500 hover:bg-gray-100 hover:text-food-primary block px-3 py-2 rounded-md text-base font-medium">Beranda</a>
+                <a href="index.html#tutorials" class="text-gray-500 hover:bg-gray-100 hover:text-food-primary block px-3 py-2 rounded-md text-base font-medium">Tutorial Video</a>
+                <a href="faq.html" class="bg-food-primary text-white block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
+                <a href="ppt-tutorial.html" class="text-gray-500 hover:bg-gray-100 hover:text-food-primary block px-3 py-2 rounded-md text-base font-medium">PPT Tutorial</a>
+            </div>
+        </div>
+    </nav>
+
+<div class="container">
+  <div class="search-wrap">
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#888" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="11" r="6" stroke="#888" stroke-width="2"/></svg>
+      <input id="search" placeholder="Cari topik bantuan..." />
+      <button id="searchBtn">Cari</button>
+      <ul id="searchSuggestions" class="suggestions"></ul>
+    </div>
+    <a style="padding: 10px 12px; text-align:center; text-decoration:none;" href="https://wa.me/6281776868188" target="_blank" class="btn-contact">
+  <i class="fab fa-whatsapp"></i> Hubungi Kami
+</a>
+  </div>
+
+  <div class="grid">
+    <aside class="sidebar">
+      <nav class="cat">
+<a href="https://help.foodmedia.co.id/customer">Foodmedia Customer</a> 
+<a href="https://help.foodmedia.co.id/merchant">Food-ON Merchant</a> <a href="https://help.foodmedia.co.id/driver">Food-D Driver</a> 
+<a href="https://help.foodmedia.co.id/sales">Salesmedia</a> 
+<a href="https://foodmedia.co.id/panduan-lengkap-pengambilan-video-standar-untuk-mitra-resto-outlet-dan-katering/" target="_blank" rel="noopener">Tutorial Pengambilan Video</a> 
+<a href="https://help.foodmedia.co.id/term">Syarat & Ketentuan</a> <a href="https://help.foodmedia.co.id/policy">Kebijakan Privasi</a>
+      </nav>
+ 
+   <!-- 🔽 Tambahin blok isu di sini -->
+  <div class="sidebar-issue-block">
+    <h3><i class="fa fa-exclamation-circle"></i> Ada Kendala?</h3>
+    <p>Jika Anda mengalami masalah, hubungi tim Foodmedia:</p>
+    <ul class="contact-list">
+      <li>
+        <i class="fa-brands fa-whatsapp"></i>
+        <a href="https://wa.me/6281776868188" target="_blank">0817 7686 8188</a>
+      </li>
+      <li>
+        <i class="fa fa-envelope"></i>
+        <a href="mailto:foodmediateam@gmail.com">foodmediateam@gmail.com</a>
+      </li>
+    </ul>
+  </div>
+</aside>
+
+    <section>
+      <div class="hero">
+        <div>
+          <h1>Butuh bantuan? Mulai dari sini.</h1>
+          <p>Pilih kategori di kiri atau ketik pertanyaan di pencarian.</p>
+        </div>
+        <div>
+          <p class="muted">Update terakhir:</p>
+          <strong>26 November 2025</strong>
+        </div>
+      </div>
+
+    <div class="faq-list" id="faqs">
+  <article class="card" id="customer">
+    <div class="faq-question" tabindex="0">
+      <h3>Apa Itu Foodmedia?</h3>
+      <div class="muted">+</div>
+    </div>
+    <div class="faq-answer">
+      Foodmedia adalah platform layanan pesan antar makanan, pick-up, reservasi, dan aplikasi untuk mitra driver (Food‑D). Pelajari lebih lanjut di foodmedia.co.id.
+    </div>
+  </article>
+
+  <article class="card" id="merchant">
+    <div class="faq-question" tabindex="0">
+      <h3>Apa Itu Food-ON?</h3>
+      <div class="muted">+</div>
+    </div>
+    <div class="faq-answer">
+      Food-ON adalah aplikasi untuk merchant yang membantu mengelola menu, pesanan, promosi, dan laporan operasional secara digital.
+    </div>
+  </article>
+
+  <article class="card" id="driver">
+    <div class="faq-question" tabindex="0">
+      <h3>Apa Itu Food-D?</h3>
+      <div class="muted">+</div>
+    </div>
+    <div class="faq-answer">
+      Food‑D adalah aplikasi untuk mitra driver yang melakukan pengantaran pesanan. Sistem dirancang agar mudah dipakai dan cepat.
+    </div>
+  </article>
+
+  <article class="card" id="sales">
+    <div class="faq-question" tabindex="0">
+      <h3>Apa Itu Salesmedia?</h3>
+      <div class="muted">+</div>
+    </div>
+    <div class="faq-answer">
+      Salesmedia adalah alat pendukung tim sales untuk merekrut, mencatat, dan memantau merchant selama proses onboarding.
+    </div>
+  </article>
+
+  <article class="card" id="how-merchant-register">
+    <div class="faq-question" tabindex="0">
+      <h3>Bagaimana cara daftar sebagai merchant?</h3>
+      <div class="muted">+</div>
+    </div>
+    <div class="faq-answer">
+      1. Download aplikasi Food-ON dari Play Store atau App Store. 2. Pilih Registrasi Merchant dan lengkapi data usaha. 3. Unggah dokumen yang diminta. 4. Tunggu verifikasi dari tim Foodmedia.
+    </div>
+  </article>
+
+  <article class="card" id="how-driver-register">
+    <div class="faq-question" tabindex="0">
+      <h3>Bagaimana cara daftar sebagai driver?</h3>
+      <div class="muted">+</div>
+    </div>
+    <div class="faq-answer">
+      1. Kunjungi foodmedia.co.id → Daftar Mitra → Pilih Daftar Food-D. 2. Isi formulir pendaftaran dan unggah dokumen identitas serta data kendaraan jika diperlukan. 3. Tunggu konfirmasi verifikasi.
+    </div>
+  </article>
+</div>
+
+
+    </section>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-10 mt-12">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <p class="text-gray-400 text-sm">&copy; 2025 FoodMedia Indonesia. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const redirectMap = {
+    // FOODMEDIA COSTOMER
+    "Bagaimana cara mengatasi error Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89V45ASBV9TKT06E4C2",
+    "Bagaimana cara mengganti alamat pengiriman Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89V45ASBV9TKT06E4C1",
+    "Bagaimana cara mengganti nama penerima Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89T5WSTNRZC6W9FNYR1",
+    "Bagaimana cara mengganti foto profil Foodmedia": "https://help.foodmedia.co.id/customer-detail/01K2PCH89T5WSTNRZC6W9FNYR0",
+    "Bagaimana cara ganti password Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89SD9EVT87R14PWXQD2",
+    "Apakah aman memesan makanan dari Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89SD9EVT87R14PWXQD1",
+    "Mengapa saya kesulitan mendapatkan Mitra Pengemudi Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89SD9EVT87R14PWXQD0",
+    "Apa itu Foodmedia Food-D?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89R3X4NNJBZ5NT0JYSD",
+    "Bagaimana jika saya mengalami kendala pada pengiriman Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89R3X4NNJBZ5NT0JYSC",
+    "Apa itu Foodmedia Kurir Resto?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89R3X4NNJBZ5NT0JYSB",
+    "Cara Membuat Reservasi di Foodmedia": "https://help.foodmedia.co.id/customer-detail/01K2PCH89QCC61PTMM2Y3CFXAG",
+    "Apa itu Foodmedia Reservasi ?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89QCC61PTMM2Y3CFXAF",
+    "Bagaimana menjadwalkan pengiriman makanan": "https://help.foodmedia.co.id/customer-detail/01K2PCH89PGKBQBJ6Y881ZP7E9",
+    "Apa itu Foodmedia Pickup?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89PGKBQBJ6Y881ZP7E8",
+    "Bagaimana cara mengajukan pengembalian dana pada pesanan Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89PGKBQBJ6Y881ZP7E7",
+    "Bagaimana cara membatalkan pesanan di foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89N16MDEH4P21W5DAJE",
+    "Bagaimana jika saya mengalami kendala saat membuat pesanan Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89N16MDEH4P21W5DAJD",
+    "Bagaimana cara memesan Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89M8T3F1E2FH91HGMWW",
+    "Cara Daftar dengan Akun Google di Foodmedia": "https://help.foodmedia.co.id/customer-detail/01K2PCH89M8T3F1E2FH91HGMWV",
+    "Cara Daftar Sebagai Customer di Aplikasi Foodmedia": "https://help.foodmedia.co.id/customer-detail/01K2PCH89KC8DKVPR1P23X3XZX",
+    "Apa itu Foodmedia?": "https://help.foodmedia.co.id/customer-detail/01K2PCH89KC8DKVPR1P23X3XZW",
+
+    // FOOD-ON Merchant
+    "Food On sering hang, gimana atasinya?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AWB2FC1BWQ5XEH7B1B",
+    "Bagaimana cara kelola pesanan di Food On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AVTMS3XPYP17NWTBY7",
+    "Daftar Food On error, solusinya?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8ASA37M3DP2Q0HF5ZY2",
+    "Gimana tambah member merchant?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8ASA37M3DP2Q0HF5ZY1",
+    "Gagal login Food On, solusinya?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8ARRNNX2M987EYM5G84",
+    "Bagaimana cara atasi error di aplikasi Food On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8ARRNNX2M987EYM5G83",
+    "Lupa password Food On, harus gimana?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AQBN6DZZBPAKF0RJYX",
+    "Gimana atur titik lokasi resto?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AQBN6DZZBPAKF0RJYW",
+    "Bagimana tambah topping di Food On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AQBN6DZZBPAKF0RJYV",
+    "Bagaimana cara ganti password Food On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8APXK8RVWKZ1QSKBS2Z",
+    "Gimana atur buka/tutup resto di Food On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8APXK8RVWKZ1QSKBS2Y",
+    "Gimana cara tarik uang di Food On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8ANB9VHHYG94A5313VV",
+    "Gimana atur kurir & promo kirim di Food On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8ANB9VHHYG94A5313VT",
+    "Cara cepat aktifin reservasi di Foodmedia?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8ANB9VHHYG94A5313VS",
+    "Bagaimana cara mengatasi foto yang gagal diunggah di aplikasi Food On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AM3M1X0YXGDC5YJQVE",
+    "Panduan Lengkap Pendaftaran Mitra Merchant Foodmedia": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AM3M1X0YXGDC5YJQVD",
+    "Belum Menerima Pembayaran Atau Laporan Harian?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AKG3B66RZYD16TX4TY",
+    "Kendala Pada Notifikasi?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AKG3B66RZYD16TX4TX",
+    "Cara Ganti Foto Banner atau Thumbnail Resto": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AKG3B66RZYD16TX4TW",
+    "Saya sudah mendaftar. Selanjutnya apa?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AJH2K54PJ4WK3MBND6",
+    "Apakah saya akan mendapat bahan promosi (POSM)?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AJH2K54PJ4WK3MBND5",
+    "Apakah ada bantuan teknis jika saya mengalami kendala?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AJH2K54PJ4WK3MBND4",
+    "Bagaimana cara memperbarui menu atau jam operasional?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AH3WKGE40ATQJTC8N6",
+    "Apa itu Pesanan Terjadwal?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AH3WKGE40ATQJTC8N5",
+    "Bagaimana Cara Untuk Mengetahui Status Pendaftaran": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AGSMKTAMFYF9QVRN77",
+    "Di platform mana aplikasi Food-On tersedia?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AGSMKTAMFYF9QVRN76",
+    "Apakah saya bisa menggunakan kurir sendiri?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AGSMKTAMFYF9QVRN75",
+    "Apakah aplikasi ini berbayar?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AFMNP8KYPQPDHZAYYT",
+    "Apa saja syarat mendaftar sebagai merchant?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AFMNP8KYPQPDHZAYYS",
+    "Bagaimana cara daftar merchant Food-On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AFMNP8KYPQPDHZAYYR",
+    "Apa perbedaan merchant Gratis dan Premium?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AEWETDHAT6HV47AE2D",
+    "Apa keuntungan menggunakan Food-On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AEWETDHAT6HV47AE2C",
+    "Siapa yang bisa menggunakan Food-On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8AEWETDHAT6HV47AE2B",
+    "Apa itu Food-On?": "https://help.foodmedia.co.id/merchant-detail/01K2PCH8ADSRWZFM3MKFGB0X8M",
+    
+    // FOOD-D Driver
+      "Bagaimana cara melihat riwayat order Food-D?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8AC08PWKAKV6V4AF3GN",
+  "Bagaimana cara melihat riwayat penarikan Food-D?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8AB07EH2BTSBT24XC6H",
+  "Bagimana cara mengubah password di aplikasi Food-D": "https://help.foodmedia.co.id/driver-detail/01K2PCH8AB07EH2BTSBT24XC6G",
+  "Bagaimana cara mengedit info pribadi di aplikasi Food-D": "https://help.foodmedia.co.id/driver-detail/01K2PCH8AA0C34PRX6PGQV66K7",
+  "Bagaimana jika lupa password Food-D?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8AA0C34PRX6PGQV66K6",
+  "Bagaimana cara penarikan uang di aplikasi Food-D": "https://help.foodmedia.co.id/driver-detail/01K2PCH8AA0C34PRX6PGQV66K5",
+  "Kenapa Aplikasi Food-D Error & Cara Mengatasinya?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A9ECW70DPG4KM56RBA",
+  "Kenapa Saya Tidak Bisa Login di Aplikasi Food-D?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A9ECW70DPG4KM56RB9",
+  "Bagaimana Cara Mitra Pengemudi Food-D Mengajukan Banding?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A8F259ZXP8VHEPZAYV",
+  "Kendala tidak bisa mengakses akun akibat penggunaan aplikasi gps palsu/perangkat tambahan": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A8F259ZXP8VHEPZAYT",
+
+  "jika Pelanggan tidak dapat dihubungi dan tidak ada di lokasi pengantaran": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A8F259ZXP8VHEPZAYS",
+  "Apa yang harus dilakukan jika menu tidak tersedia?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A7ZZQ4X7QW5VV4DA84",
+  "bagaiman cara membeli atribut mitra pengemudi": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A7ZZQ4X7QW5VV4DA83",
+  "Pengajuan penyesuaian tarif karena alamat pelanggan tidak sesuai dengan titik pengantaran pesanan": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A6H488HNGQCM932AR9",
+  "Bagaimana jika saya mengalami kendala pada aplikasi Foodmedia Driver?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A6H488HNGQCM932AR8",
+  "Mengapa saya tidak dapat menekan tombol “Selesaikan Pesanan”?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A6H488HNGQCM932AR7",
+  "Bagaimana cara menghindari modus penipuan Mitra Pengemudi Food D melalui pesan mencurigakan?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A5325V8SWQAMJFWCFP",
+  "Bagaimana cara menghindari modus penipuan dengan dalih mendapatkan bonus dalam pesanan foodmedia?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A5325V8SWQAMJFWCFN",
+  "Mengapa akun Mitra Pengemudi Foodmedia saya ter-log out secara otomatis?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A49MBK39HFAHNQAPK0",
+  "Apa yang harus saya lakukan jika sudah tiba di restoran": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A49MBK39HFAHNQAPJZ",
+
+  "Apa yang harus dilakukan Mitra Pengemudi apabila alamat Penerima tidak ditemukan dan Penerima tidak dapat dihubungi?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A49MBK39HFAHNQAPJY",
+  "Panduan Lengkap Pendaftaran Mitra Driver Foodmedia": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A3BKMJ8A2NFKAHY7WP",
+  "Apakah saya bisa berhenti kapan saja?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A3BKMJ8A2NFKAHY7WN",
+  "Apa saja perlengkapan yang saya dapatkan?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A2WD00JAPWJKBSA6WJ",
+  "Apakah sistemnya mirip dengan aplikasi pengantaran online lainnya?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A2WD00JAPWJKBSA6WH",
+  "Kemana saya harus menghubungi jika ada kendala?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A2WD00JAPWJKBSA6WG",
+  "Bagaimana jika saya belum memiliki SKCK?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A1S8CEHTM49XM953SY",
+  "Bagaimana pengembalian saldo jaminan?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A1S8CEHTM49XM953SX",
+  "Apakah ada pelatihan khusus untuk driver baru?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A05BQ1MFQJSKXX2C3W",
+  "Kapan saya bisa mulai menerima pesanan?": "https://help.foodmedia.co.id/driver-detail/01K2PCH8A05BQ1MFQJSKXX2C3V",
+
+  "Kendaraan seperti apa yang diterima?": "https://help.foodmedia.co.id/driver-detail/01K2PCH89ZR8XXD38CFW998KAC",
+  "Apa saja keuntungan menjadi mitra driver Food-D?": "https://help.foodmedia.co.id/driver-detail/01K2PCH89ZR8XXD38CFW998KAB",
+  "Langkah Pendaftaran Food-D": "https://help.foodmedia.co.id/driver-detail/01K2PCH89YAP0BRPVK6QT134H3",
+  "Apa saja syarat dan dokumen untuk mendaftar?": "https://help.foodmedia.co.id/driver-detail/01K2PCH89YAP0BRPVK6QT134H2",
+  "Berapa biaya pendaftaran mitra driver?": "https://help.foodmedia.co.id/driver-detail/01K2PCH89XZ8PFAN083K3VCC1P",
+  "Apa itu Food-D?": "https://help.foodmedia.co.id/driver-detail/01K2PCH89XZ8PFAN083K3VCC1N",
+  
+    // Salesmedia
+      "Bagaimana cara mengetahui referral Anda di Salesmedia?": "https://help.foodmedia.co.id/sales-detail/01K2PCH8B5PBWTHTYKVR4B2GZH",
+  "Aplikasi tiba-tiba logout otomatis": "https://help.foodmedia.co.id/sales-detail/01K2PCH8B5PBWTHTYKVR4B2GZG",
+  "Bagaimana jika aplikasi Salesmedia error atau tidak bisa diakses?": "https://help.foodmedia.co.id/sales-detail/01K2PCH8B4HH9V8G2VZT7T48NB",
+  "Apakah saya bisa melihat merchant yang saya daftarkan?": "https://help.foodmedia.co.id/sales-detail/01K2PCH8B4HH9V8G2VZT7T48NA",
+  "Apa fungsi dashboard di aplikasi Salesmedia?": "https://help.foodmedia.co.id/sales-detail/01K2PCH8B3BSDEVNAXTGR3NGWC",
+  "Saya menemukan bug/masalah di sistem Salesmedia": "https://help.foodmedia.co.id/sales-detail/01K2PCH8B3BSDEVNAXTGR3NGWB",
+  "Bagaimana cara mengecek apakah merchant sudah menggunakan kode saya?": "https://help.foodmedia.co.id/sales-detail/01K2PCH8B27F2AQ3CWBAVZD5HT",
+  "Lupa Password Salesmedia? Ini Solusinya": "https://help.foodmedia.co.id/sales-detail/01K2PCH8B1B4RWAM0CMGWQ595H",
+  "Cara login ke akun Salesmedia": "https://help.foodmedia.co.id/sales-detail/01K2PCH8B1B4RWAM0CMGWQ595G"
+
+  };
+
+  const search = document.getElementById('search');
+  const btn = document.getElementById('searchBtn');
+  const list = document.getElementById('searchSuggestions');
+
+  function go(q) {
+    const val = (q || '').trim();
+    if (!val) {
+      search && search.focus();
+      return;
+    }
+    const key = val.toLowerCase();
+    const found = Object.keys(redirectMap).find(k => k.toLowerCase() === key);
+    if (found) {
+      window.location.assign(redirectMap[found]);
+    } else {
+      const url = new URL('https://help.foodmedia.co.id/');
+      url.searchParams.set('q', val);
+      window.location.assign(url.toString());
+    }
+  }
+
+  function showSug(val) {
+    if (!list) return;
+    list.innerHTML = '';
+    list.classList.remove('show');
+    if (!val) return;
+
+    const filtered = Object.keys(redirectMap).filter(d =>
+      d.toLowerCase().includes(val.toLowerCase())
+    );
+    filtered.forEach(d => {
+      const li = document.createElement('li');
+      li.textContent = d;
+      li.addEventListener('click', () => go(d));
+      list.appendChild(li);
+    });
+
+    if (filtered.length) list.classList.add('show');
+  }
+
+  if (btn) {
+    btn.type = 'button';
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      go(search ? search.value : '');
+    });
+  }
+
+  if (search) {
+    search.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        go(search.value);
+      }
+    });
+    search.addEventListener('input', e => showSug(e.target.value));
+  }
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search')) list.classList.remove('show');
+  });
+
+  // === FAQ toggle ===
+  document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', () => {
+      const card = q.closest('.card');
+      card.classList.toggle('open');
+    });
+
+    // akses keyboard (Enter / Space)
+    q.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        q.click();
+      }
+    });
+  });
+
+  // === Mobile Menu Toggle ===
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const openIcon = document.getElementById('menu-open-icon');
+  const closeIcon = document.getElementById('menu-close-icon');
+
+  mobileMenuButton.addEventListener('click', () => {
+      const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+      mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+      mobileMenu.classList.toggle('hidden');
+      openIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+  });
+
+  // Close mobile menu when a link is clicked
+  mobileMenu.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+          mobileMenuButton.click();
+      }
+  });
+
+});
+</script>
+</body>
+</html>
