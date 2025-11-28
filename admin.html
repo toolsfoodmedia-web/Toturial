@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - FoodMedia</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        food: {
+                            primary: '#EF0000',
+                            secondary: '#FF3333',
+                            dark: '#990000',
+                            bg: '#FEF2F2',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 antialiased">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-red-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold text-gray-900">Admin Panel - FoodMedia</h1>
+                <a href="index.html" class="text-food-primary hover:text-food-dark transition">
+                    <i class="fas fa-home mr-2"></i>Kembali ke Situs
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Tabs -->
+        <div class="mb-8">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8">
+                    <button id="videosTab" class="tab-btn active border-b-2 border-food-primary py-2 px-1 text-sm font-medium text-food-primary">
+                        <i class="fas fa-video mr-2"></i>Video Tutorials
+                    </button>
+                    <button id="pptsTab" class="tab-btn border-b-2 border-transparent py-2 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                        <i class="fas fa-file-powerpoint mr-2"></i>PPT Tutorials
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Videos Section -->
+        <div id="videosSection" class="tab-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-gray-900">Kelola Video Tutorials</h2>
+                <button onclick="openVideoModal()" class="bg-food-primary text-white px-4 py-2 rounded-lg hover:bg-food-dark transition">
+                    <i class="fas fa-plus mr-2"></i>Tambah Video
+                </button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6">
+                    <div id="videosList" class="space-y-4">
+                        <!-- Videos will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PPTs Section -->
+        <div id="pptsSection" class="tab-content hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-gray-900">Kelola PPT Tutorials</h2>
+                <button onclick="openPptModal()" class="bg-food-primary text-white px-4 py-2 rounded-lg hover:bg-food-dark transition">
+                    <i class="fas fa-plus mr-2"></i>Tambah PPT
+                </button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6">
+                    <div id="pptsList" class="space-y-4">
+                        <!-- PPTs will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="fixed inset-0 z-50 hidden bg-black/50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4" id="videoModalTitle">Tambah Video Baru</h3>
+                <form id="videoForm">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">YouTube Video ID</label>
+                        <input type="text" id="videoId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-food-primary focus:border-transparent" placeholder="Contoh: 8ZPFuu6jMks" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul Video</label>
+                        <input type="text" id="videoTitle" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-food-primary focus:border-transparent" placeholder="Masukkan judul video" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
+                        <textarea id="videoDesc" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-food-primary focus:border-transparent" placeholder="Masukkan deskripsi video" required></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                        <select id="videoCategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-food-primary focus:border-transparent" required>
+                            <option value="">Pilih kategori</option>
+                            <option value="Driver">Driver (Food D)</option>
+                            <option value="Merchant">Merchant (Food ON)</option>
+                            <option value="User">Pelanggan</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="closeVideoModal()" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition">Batal</button>
+                        <button type="submit" class="bg-food-primary text-white px-4 py-2 rounded-lg hover:bg-food-dark transition">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- PPT Modal -->
+    <div id="pptModal" class="fixed inset-0 z-50 hidden bg-black/50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4" id="pptModalTitle">Tambah PPT Baru</h3>
+                <form id="pptForm">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul PPT</label>
+                        <input type="text" id="pptTitle" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-food-primary focus:border-transparent" placeholder="Masukkan judul PPT" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">URL Google Drive (View)</label>
+                        <input type="url" id="pptViewUrl" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-food-primary focus:border-transparent" placeholder="https://docs.google.com/presentation/d/..." required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">URL Google Drive (Download)</label>
+                        <input type="url" id="pptDownloadUrl" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-food-primary focus:border-transparent" placeholder="https://docs.google.com/presentation/d/.../export/pptx" required>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="closePptModal()" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition">Batal</button>
+                        <button type="submit" class="bg-food-primary text-white px-4 py-2 rounded-lg hover:bg-food-dark transition">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'videos';
+        let editingVideoId = null;
+        let editingPptId = null;
+
+        // Tab switching
+        document.getElementById('videosTab').addEventListener('click', () => switchTab('videos'));
+        document.getElementById('pptsTab').addEventListener('click', () => switchTab('ppts'));
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-food-primary', 'text-food-primary');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+
+            if (tab === 'videos') {
+                document.getElementById('videosTab').classList.remove('border-transparent', 'text-gray-500');
+                document.getElementById('videosTab').classList.add('border-food-primary', 'text-food-primary');
+                document.getElementById('videosSection').classList.remove('hidden');
+                loadVideos();
+            } else {
+                document.getElementById('pptsTab').classList.remove('border-transparent', 'text-gray-500');
+                document.getElementById('pptsTab').classList.add('border-food-primary', 'text-food-primary');
+                document.getElementById('pptsSection').classList.remove('hidden');
+                loadPpts();
+            }
+        }
+
+        // Load videos
+        async function loadVideos() {
+            try {
+                const response = await fetch('http://localhost:3000/api/videos');
+                const videos = await response.json();
+                const videosList = document.getElementById('videosList');
+                videosList.innerHTML = '';
+
+                videos.forEach(video => {
+                    const videoItem = `
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center gap-4">
+                                <img src="https://img.youtube.com/vi/${video.id}/default.jpg" alt="${video.title}" class="w-16 h-12 rounded object-cover">
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">${video.title}</h4>
+                                    <p class="text-sm text-gray-600">${video.category}</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editVideo('${video.id}')" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteVideo('${video.id}')" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    videosList.innerHTML += videoItem;
+                });
+            } catch (error) {
+                console.error('Error loading videos:', error);
+            }
+        }
+
+        // Load PPTs
+        async function loadPpts() {
+            try {
+                const response = await fetch('http://localhost:3000/api/ppts');
+                const ppts = await response.json();
+                const pptsList = document.getElementById('pptsList');
+                pptsList.innerHTML = '';
+
+                ppts.forEach(ppt => {
+                    const pptItem = `
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center gap-4">
+                                <i class="fas fa-file-powerpoint text-3xl text-food-primary"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">${ppt.title}</h4>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editPpt('${ppt.id}')" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deletePpt('${ppt.id}')" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    pptsList.innerHTML += pptItem;
+                });
+            } catch (error) {
+                console.error('Error loading PPTs:', error);
+            }
+        }
+
+        // Video modal functions
+        function openVideoModal(videoId = null) {
+            editingVideoId = videoId;
+            const modal = document.getElementById('videoModal');
+            const form = document.getElementById('videoForm');
+            const title = document.getElementById('videoModalTitle');
+
+            if (videoId) {
+                title.textContent = 'Edit Video';
+                // Load existing data
+                fetch(`http://localhost:3000/api/videos/${videoId}`)
+                    .then(response => response.json())
+                    .then(video => {
+                        document.getElementById('videoId').value = video.id;
+                        document.getElementById('videoTitle').value = video.title;
+                        document.getElementById('videoDesc').value = video.desc;
+                        document.getElementById('videoCategory').value = video.category;
+                    });
+            } else {
+                title.textContent = 'Tambah Video Baru';
+                form.reset();
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeVideoModal() {
+            document.getElementById('videoModal').classList.add('hidden');
+            editingVideoId = null;
+        }
+
+        // PPT modal functions
+        function openPptModal(pptId = null) {
+            editingPptId = pptId;
+            const modal = document.getElementById('pptModal');
+            const form = document.getElementById('pptForm');
+            const title = document.getElementById('pptModalTitle');
+
+            if (pptId) {
+                title.textContent = 'Edit PPT';
+                // Load existing data
+                fetch(`http://localhost:3000/api/ppts/${pptId}`)
+                    .then(response => response.json())
+                    .then(ppt => {
+                        document.getElementById('pptTitle').value = ppt.title;
+                        document.getElementById('pptViewUrl').value = ppt.viewUrl;
+                        document.getElementById('pptDownloadUrl').value = ppt.downloadUrl;
+                    });
+            } else {
+                title.textContent = 'Tambah PPT Baru';
+                form.reset();
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closePptModal() {
+            document.getElementById('pptModal').classList.add('hidden');
+            editingPptId = null;
+        }
+
+        // Form submissions
+        document.getElementById('videoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const videoData = {
+                id: document.getElementById('videoId').value,
+                title: document.getElementById('videoTitle').value,
+                desc: document.getElementById('videoDesc').value,
+                category: document.getElementById('videoCategory').value
+            };
+
+            try {
+                if (editingVideoId) {
+                    await fetch(`http://localhost:3000/api/videos/${editingVideoId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(videoData)
+                    });
+                } else {
+                    await fetch('http://localhost:3000/api/videos', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(videoData)
+                    });
+                }
+
+                closeVideoModal();
+                loadVideos();
+            } catch (error) {
+                console.error('Error saving video:', error);
+            }
+        });
+
+        document.getElementById('pptForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const pptData = {
+                title: document.getElementById('pptTitle').value,
+                viewUrl: document.getElementById('pptViewUrl').value,
+                downloadUrl: document.getElementById('pptDownloadUrl').value
+            };
+
+            try {
+                if (editingPptId) {
+                    await fetch(`http://localhost:3000/api/ppts/${editingPptId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(pptData)
+                    });
+                } else {
+                    await fetch('http://localhost:3000/api/ppts', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(pptData)
+                    });
+                }
+
+                closePptModal();
+                loadPpts();
+            } catch (error) {
+                console.error('Error saving PPT:', error);
+            }
+        });
+
+        // Delete functions
+        async function deleteVideo(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus video ini?')) {
+                try {
+                    await fetch(`http://localhost:3000/api/videos/${id}`, { method: 'DELETE' });
+                    loadVideos();
+                } catch (error) {
+                    console.error('Error deleting video:', error);
+                }
+            }
+        }
+
+        async function deletePpt(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus PPT ini?')) {
+                try {
+                    await fetch(`http://localhost:3000/api/ppts/${id}`, { method: 'DELETE' });
+                    loadPpts();
+                } catch (error) {
+                    console.error('Error deleting PPT:', error);
+                }
+            }
+        }
+
+        // Edit functions
+        function editVideo(id) {
+            openVideoModal(id);
+        }
+
+        function editPpt(id) {
+            openPptModal(id);
+        }
+
+        // Initial load
+        loadVideos();
+    </script>
+</body>
+</html>
