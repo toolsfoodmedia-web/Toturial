@@ -191,72 +191,62 @@
         }
 
         // Load videos
-        async function loadVideos() {
-            try {
-                const response = await fetch('http://localhost:3000/api/videos');
-                const videos = await response.json();
-                const videosList = document.getElementById('videosList');
-                videosList.innerHTML = '';
+        function loadVideos() {
+            const videos = JSON.parse(localStorage.getItem('tutorialVideos') || '[]');
+            const videosList = document.getElementById('videosList');
+            videosList.innerHTML = '';
 
-                videos.forEach(video => {
-                    const videoItem = `
-                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                            <div class="flex items-center gap-4">
-                                <img src="https://img.youtube.com/vi/${video.id}/default.jpg" alt="${video.title}" class="w-16 h-12 rounded object-cover">
-                                <div>
-                                    <h4 class="font-semibold text-gray-900">${video.title}</h4>
-                                    <p class="text-sm text-gray-600">${video.category}</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="editVideo('${video.id}')" class="text-blue-600 hover:text-blue-800">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="deleteVideo('${video.id}')" class="text-red-600 hover:text-red-800">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+            videos.forEach(video => {
+                const videoItem = `
+                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                        <div class="flex items-center gap-4">
+                            <img src="https://img.youtube.com/vi/${video.id}/default.jpg" alt="${video.title}" class="w-16 h-12 rounded object-cover">
+                            <div>
+                                <h4 class="font-semibold text-gray-900">${video.title}</h4>
+                                <p class="text-sm text-gray-600">${video.category}</p>
                             </div>
                         </div>
-                    `;
-                    videosList.innerHTML += videoItem;
-                });
-            } catch (error) {
-                console.error('Error loading videos:', error);
-            }
+                        <div class="flex gap-2">
+                            <button onclick="editVideo('${video.id}')" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteVideo('${video.id}')" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                videosList.innerHTML += videoItem;
+            });
         }
 
         // Load PPTs
-        async function loadPpts() {
-            try {
-                const response = await fetch('http://localhost:3000/api/ppts');
-                const ppts = await response.json();
-                const pptsList = document.getElementById('pptsList');
-                pptsList.innerHTML = '';
+        function loadPpts() {
+            const ppts = JSON.parse(localStorage.getItem('tutorialPpts') || '[]');
+            const pptsList = document.getElementById('pptsList');
+            pptsList.innerHTML = '';
 
-                ppts.forEach(ppt => {
-                    const pptItem = `
-                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                            <div class="flex items-center gap-4">
-                                <i class="fas fa-file-powerpoint text-3xl text-food-primary"></i>
-                                <div>
-                                    <h4 class="font-semibold text-gray-900">${ppt.title}</h4>
-                                </div>
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="editPpt('${ppt.id}')" class="text-blue-600 hover:text-blue-800">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="deletePpt('${ppt.id}')" class="text-red-600 hover:text-red-800">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+            ppts.forEach(ppt => {
+                const pptItem = `
+                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-file-powerpoint text-3xl text-food-primary"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">${ppt.title}</h4>
                             </div>
                         </div>
-                    `;
-                    pptsList.innerHTML += pptItem;
-                });
-            } catch (error) {
-                console.error('Error loading PPTs:', error);
-            }
+                        <div class="flex gap-2">
+                            <button onclick="editPpt('${ppt.id}')" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deletePpt('${ppt.id}')" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                pptsList.innerHTML += pptItem;
+            });
         }
 
         // Video modal functions
@@ -268,15 +258,15 @@
 
             if (videoId) {
                 title.textContent = 'Edit Video';
-                // Load existing data
-                fetch(`http://localhost:3000/api/videos/${videoId}`)
-                    .then(response => response.json())
-                    .then(video => {
-                        document.getElementById('videoId').value = video.id;
-                        document.getElementById('videoTitle').value = video.title;
-                        document.getElementById('videoDesc').value = video.desc;
-                        document.getElementById('videoCategory').value = video.category;
-                    });
+                // Load existing data from localStorage
+                const videos = JSON.parse(localStorage.getItem('tutorialVideos') || '[]');
+                const video = videos.find(v => v.id === videoId);
+                if (video) {
+                    document.getElementById('videoId').value = video.id;
+                    document.getElementById('videoTitle').value = video.title;
+                    document.getElementById('videoDesc').value = video.desc;
+                    document.getElementById('videoCategory').value = video.category;
+                }
             } else {
                 title.textContent = 'Tambah Video Baru';
                 form.reset();
@@ -299,14 +289,14 @@
 
             if (pptId) {
                 title.textContent = 'Edit PPT';
-                // Load existing data
-                fetch(`http://localhost:3000/api/ppts/${pptId}`)
-                    .then(response => response.json())
-                    .then(ppt => {
-                        document.getElementById('pptTitle').value = ppt.title;
-                        document.getElementById('pptViewUrl').value = ppt.viewUrl;
-                        document.getElementById('pptDownloadUrl').value = ppt.downloadUrl;
-                    });
+                // Load existing data from localStorage
+                const ppts = JSON.parse(localStorage.getItem('tutorialPpts') || '[]');
+                const ppt = ppts.find(p => p.id === pptId);
+                if (ppt) {
+                    document.getElementById('pptTitle').value = ppt.title;
+                    document.getElementById('pptViewUrl').value = ppt.viewUrl;
+                    document.getElementById('pptDownloadUrl').value = ppt.downloadUrl;
+                }
             } else {
                 title.textContent = 'Tambah PPT Baru';
                 form.reset();
@@ -321,7 +311,7 @@
         }
 
         // Form submissions
-        document.getElementById('videoForm').addEventListener('submit', async (e) => {
+        document.getElementById('videoForm').addEventListener('submit', (e) => {
             e.preventDefault();
 
             const videoData = {
@@ -331,79 +321,68 @@
                 category: document.getElementById('videoCategory').value
             };
 
-            try {
-                if (editingVideoId) {
-                    await fetch(`http://localhost:3000/api/videos/${editingVideoId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(videoData)
-                    });
-                } else {
-                    await fetch('http://localhost:3000/api/videos', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(videoData)
-                    });
-                }
+            const videos = JSON.parse(localStorage.getItem('tutorialVideos') || '[]');
 
-                closeVideoModal();
-                loadVideos();
-            } catch (error) {
-                console.error('Error saving video:', error);
+            if (editingVideoId) {
+                // Edit existing video
+                const index = videos.findIndex(v => v.id === editingVideoId);
+                if (index !== -1) {
+                    videos[index] = videoData;
+                }
+            } else {
+                // Add new video
+                videos.push(videoData);
             }
+
+            localStorage.setItem('tutorialVideos', JSON.stringify(videos));
+            closeVideoModal();
+            loadVideos();
         });
 
-        document.getElementById('pptForm').addEventListener('submit', async (e) => {
+        document.getElementById('pptForm').addEventListener('submit', (e) => {
             e.preventDefault();
 
             const pptData = {
+                id: editingPptId || Date.now().toString(),
                 title: document.getElementById('pptTitle').value,
                 viewUrl: document.getElementById('pptViewUrl').value,
                 downloadUrl: document.getElementById('pptDownloadUrl').value
             };
 
-            try {
-                if (editingPptId) {
-                    await fetch(`http://localhost:3000/api/ppts/${editingPptId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(pptData)
-                    });
-                } else {
-                    await fetch('http://localhost:3000/api/ppts', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(pptData)
-                    });
-                }
+            const ppts = JSON.parse(localStorage.getItem('tutorialPpts') || '[]');
 
-                closePptModal();
-                loadPpts();
-            } catch (error) {
-                console.error('Error saving PPT:', error);
+            if (editingPptId) {
+                // Edit existing PPT
+                const index = ppts.findIndex(p => p.id === editingPptId);
+                if (index !== -1) {
+                    ppts[index] = pptData;
+                }
+            } else {
+                // Add new PPT
+                ppts.push(pptData);
             }
+
+            localStorage.setItem('tutorialPpts', JSON.stringify(ppts));
+            closePptModal();
+            loadPpts();
         });
 
         // Delete functions
-        async function deleteVideo(id) {
+        function deleteVideo(id) {
             if (confirm('Apakah Anda yakin ingin menghapus video ini?')) {
-                try {
-                    await fetch(`http://localhost:3000/api/videos/${id}`, { method: 'DELETE' });
-                    loadVideos();
-                } catch (error) {
-                    console.error('Error deleting video:', error);
-                }
+                const videos = JSON.parse(localStorage.getItem('tutorialVideos') || '[]');
+                const updatedVideos = videos.filter(video => video.id !== id);
+                localStorage.setItem('tutorialVideos', JSON.stringify(updatedVideos));
+                loadVideos();
             }
         }
 
-        async function deletePpt(id) {
+        function deletePpt(id) {
             if (confirm('Apakah Anda yakin ingin menghapus PPT ini?')) {
-                try {
-                    await fetch(`http://localhost:3000/api/ppts/${id}`, { method: 'DELETE' });
-                    loadPpts();
-                } catch (error) {
-                    console.error('Error deleting PPT:', error);
-                }
+                const ppts = JSON.parse(localStorage.getItem('tutorialPpts') || '[]');
+                const updatedPpts = ppts.filter(ppt => ppt.id !== id);
+                localStorage.setItem('tutorialPpts', JSON.stringify(updatedPpts));
+                loadPpts();
             }
         }
 
